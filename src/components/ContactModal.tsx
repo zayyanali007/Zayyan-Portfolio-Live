@@ -28,20 +28,39 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
     }
   }, [isSuccess, onClose]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate reCAPTCHA and API call
     try {
-      // In a real environment:
-      // const token = await (window as any).grecaptcha.execute('SITE_KEY', {action: 'submit'});
-      // await fetch('/api/contact', { method: 'POST', body: JSON.stringify({...formData, token}) });
-      
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setIsSuccess(true);
+      // 1. Execute reCAPTCHA v3 to get the token
+      // We use the Site Key you provided earlier
+      const token = await (window as any).grecaptcha.execute('6LeBrGYsAAAAACDlFVh-KaG83tvYGBp4a9h7e4Yk', {
+        action: 'submit'
+      });
+
+      // 2. Send the data + token to your Vercel API
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          token // This sends the bot-check token to the backend
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setIsSuccess(true);
+      } else {
+        throw new Error(result.error || 'Submission failed');
+      }
     } catch (error) {
-      console.error("Submission failed", error);
+      console.error("Submission failed:", error);
+      alert("Transmission failed. Please check your connection or try again.");
     } finally {
       setIsSubmitting(false);
     }
