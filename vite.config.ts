@@ -16,8 +16,13 @@ export default defineConfig(({ mode }) => {
       },
       resolve: {
         alias: {
-          '@': path.resolve(__dirname, '.'),
+          // Change this from '.' to './src'
+          '@': path.resolve(__dirname, './src'),
         }
+      },
+      // Ensure the build output matches what Vercel expects
+      build: {
+        outDir: 'dist',
       }
     };
 });
