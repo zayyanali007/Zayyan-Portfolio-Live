@@ -1,4 +1,3 @@
-
 // This is a template for a Next.js 14 API Route (app/api/contact/route.ts)
 // In this specific sandbox environment, it acts as a reference for backend logic.
 
