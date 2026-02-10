@@ -1,0 +1,7 @@
+{
+  "name": "Zayyan Ali - Creative Portfolio",
+  "description": "A high-end, minimalist portfolio for a Full Stack CMS Developer featuring Swiss typography and smooth Framer Motion animations.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
